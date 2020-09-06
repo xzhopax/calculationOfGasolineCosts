@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="gas:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/gas_jar</output-path>
+    <root id="archive" name="gas.jar">
+      <element id="module-output" name="gas" />
+    </root>
+  </artifact>
+</component>
