@@ -29,7 +29,7 @@ public class Car extends JFrame {
 
     private final StringBuilder sb = new StringBuilder();
     private String date = "";
-    private double price = 0, distance = 0, speed = 0, gas = 0, resultGas = 0;
+    private double price = 0, distance = 0, speed = 0, gas = 0, resultGas = 0, midGasoline = 0;
     private int traffic = 0;
     private boolean conditioner = true, dynamicDriving = true;
 
@@ -38,14 +38,25 @@ public class Car extends JFrame {
      * gasoline and money spent for the distance traveled in the city (VW polo)
      */
     protected void priceInCityGAS // start priceInCityGAS
-    (double distance, int traffic, double gasolinePrice, boolean conditioner, boolean dynamicDriving) {
+    (double distance, int traffic,double midGasoline, double gasolinePrice, boolean conditioner, boolean dynamicDriving) {
 
         if (conditioner) {
-            setGas(getGas() + trafficCongestion[traffic - 1] + 0.5);
-        } else setGas(getGas() + trafficCongestion[traffic - 1]);
+            if (getTraffic() != 0) {
+                setGas(getGas() + getTrafficCongestion()[traffic - 1] + 0.5);
+            } else  {
+                setGas(getGas() + getMidGasoline() + 0.5);
+            }
+        } else if (getTraffic() != 0) {
+            setGas(getGas() + getTrafficCongestion()[traffic - 1]);
+        } else {
+            setGas(getGas() + getMidGasoline());
+        }
 
         if (dynamicDriving) {
             setGas(getGas() + 2.0);
+        }
+        if (getTraffic() == 0 && getMidGasoline() == 0) {
+            setGas(0);
         }
         setGas((getGas() / 100) * distance);
         setResultGas(getGas() * gasolinePrice);
@@ -76,25 +87,25 @@ public class Car extends JFrame {
      */
     private double sc(double speed) {
         if (speed <= 10 && speed >= 0) {
-            return speedCongestion[0];
+            return getSpeedCongestion()[0];
         } else if (speed <= 20) {
-            return speedCongestion[1];
+            return getSpeedCongestion()[1];
         } else if (speed <= 30) {
-            return speedCongestion[2];
+            return getSpeedCongestion()[2];
         } else if (speed <= 40) {
-            return speedCongestion[3];
+            return getSpeedCongestion()[3];
         } else if (speed <= 60) {
-            return speedCongestion[4];
+            return getSpeedCongestion()[4];
         } else if (speed <= 80) {
-            return speedCongestion[5];
+            return getSpeedCongestion()[5];
         } else if (speed <= 100) {
-            return speedCongestion[6];
+            return getSpeedCongestion()[6];
         } else if (speed <= 120) {
-            return speedCongestion[7];
+            return getSpeedCongestion()[7];
         } else if (speed <= 150) {
-            return speedCongestion[8];
+            return getSpeedCongestion()[8];
         } else if (speed <= 200) {
-            return speedCongestion[9];
+            return getSpeedCongestion()[9];
         }
         return 0;
     } // end private double sc(double speed)
@@ -400,5 +411,21 @@ public class Car extends JFrame {
 
     protected static void setAllMoney(double allMoney) {
         Car.allMoney = allMoney;
+    }
+
+    protected double getMidGasoline() {
+        return midGasoline;
+    }
+
+    protected void setMidGasoline(double midGasoline) {
+        this.midGasoline = midGasoline;
+    }
+
+    public double[] getTrafficCongestion() {
+        return trafficCongestion;
+    }
+
+    public double[] getSpeedCongestion() {
+        return speedCongestion;
     }
 }
